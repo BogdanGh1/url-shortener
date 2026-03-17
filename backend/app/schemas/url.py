@@ -6,7 +6,9 @@ class ShortenURLRequest(BaseModel):
 
 
 class ShortenURLResponse(BaseModel):
-    original_url: HttpUrl
+    id: int
+    original_url: str
     short_code: str
     short_url: str
 
+    model_config = {"from_attributes": True}
