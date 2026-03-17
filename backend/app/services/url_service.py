@@ -12,6 +12,10 @@ _ALPHABET = string.ascii_letters + string.digits
 
 
 class URLService:
+    async def get_all(self, db: AsyncSession) -> list[URL]:
+        result = await db.execute(select(URL))
+        return list(result.scalars().all())
+
     async def get_by_short_code(self, short_code: str, db: AsyncSession) -> URL | None:
         result = await db.execute(select(URL).where(URL.short_code == short_code))
         return result.scalar_one_or_none()

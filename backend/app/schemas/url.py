@@ -12,3 +12,7 @@ class ShortenURLResponse(BaseModel):
     short_url: str
 
     model_config = {"from_attributes": True}
+
+
+class URLListResponse(BaseModel):
+    urls: list[ShortenURLResponse]
