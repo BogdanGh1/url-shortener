@@ -30,6 +30,3 @@ build/
 notebooks/
 .ipynb_checkpoints/
 
-# IDEs
-.vscode/
-.idea/
