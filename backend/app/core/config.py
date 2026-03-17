@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     api_v1_prefix: str = "/api/v1"
     base_url: str = "http://localhost:8000"
     short_code_length: int = 7
+    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/url_shortener"
 
     model_config = SettingsConfigDict(
         env_file=".env",
