@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     debug: bool = True
     api_v1_prefix: str = "/api/v1"
     base_url: str = "http://localhost:8000"
+    short_code_length: int = 7
 
     model_config = SettingsConfigDict(
         env_file=".env",
