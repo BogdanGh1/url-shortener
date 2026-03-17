@@ -26,6 +26,10 @@ build/
 # Ruff
 .ruff_cache/
 
+# Jupyter
+notebooks/
+.ipynb_checkpoints/
+
 # IDEs
 .vscode/
 .idea/

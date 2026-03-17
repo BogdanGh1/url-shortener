@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     app_env: str = "development"
     debug: bool = True
     api_v1_prefix: str = "/api/v1"
+    base_url: str = "http://localhost:8000"
 
     model_config = SettingsConfigDict(
         env_file=".env",
