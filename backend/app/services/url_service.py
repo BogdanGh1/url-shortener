@@ -16,6 +16,14 @@ class URLService:
         result = await db.execute(select(URL))
         return list(result.scalars().all())
 
+    async def delete_by_short_code(self, short_code: str, db: AsyncSession) -> bool:
+        url = await self.get_by_short_code(short_code, db)
+        if url is None:
+            return False
+        await db.delete(url)
+        await db.commit()
+        return True
+
     async def get_by_short_code(self, short_code: str, db: AsyncSession) -> URL | None:
         result = await db.execute(select(URL).where(URL.short_code == short_code))
         return result.scalar_one_or_none()

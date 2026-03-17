@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -38,3 +38,14 @@ async def shorten_url(
     db: AsyncSession = Depends(get_db),
 ) -> ShortenURLResponse:
     return await URLService().shorten(payload, db)
+
+
+@router.delete(
+    "/{short_code}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="Delete a shortened URL",
+)
+async def delete_url(short_code: str, db: AsyncSession = Depends(get_db)) -> None:
+    deleted = await URLService().delete_by_short_code(short_code, db)
+    if not deleted:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Short code not found")

@@ -51,3 +51,29 @@ async def test_get_all_urls_contains_created(client):
     urls = response.json()["urls"]
     assert len(urls) > 0
     assert all("id" in u and "short_code" in u and "short_url" in u for u in urls)
+
+
+@pytest.mark.asyncio
+async def test_delete_url_returns_204(client):
+    create = await client.post("/api/v1/urls/shorten", json={"original_url": "https://delete-me.com"})
+    short_code = create.json()["short_code"]
+
+    response = await client.delete(f"/api/v1/urls/{short_code}")
+    assert response.status_code == 204
+
+
+@pytest.mark.asyncio
+async def test_delete_url_no_longer_redirects(client):
+    create = await client.post("/api/v1/urls/shorten", json={"original_url": "https://delete-me-2.com"})
+    short_code = create.json()["short_code"]
+
+    await client.delete(f"/api/v1/urls/{short_code}")
+
+    response = await client.get(f"/{short_code}", follow_redirects=False)
+    assert response.status_code == 404
+
+
+@pytest.mark.asyncio
+async def test_delete_url_unknown_short_code(client):
+    response = await client.delete("/api/v1/urls/nonexistent")
+    assert response.status_code == 404
