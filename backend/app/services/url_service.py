@@ -21,11 +21,16 @@ class URLService:
         return result.scalar_one_or_none()
 
     async def shorten(self, payload: ShortenURLRequest, db: AsyncSession) -> ShortenURLResponse:
-        short_code = "".join(secrets.choice(_ALPHABET) for _ in range(settings.short_code_length))
-        url = URL(original_url=str(payload.original_url), short_code=short_code)
-        db.add(url)
-        await db.commit()
-        await db.refresh(url)
+        original_url = str(payload.original_url)
+        existing = await db.execute(select(URL).where(URL.original_url == original_url))
+        url = existing.scalar_one_or_none()
+
+        if url is None:
+            short_code = "".join(secrets.choice(_ALPHABET) for _ in range(settings.short_code_length))
+            url = URL(original_url=original_url, short_code=short_code)
+            db.add(url)
+            await db.commit()
+            await db.refresh(url)
         return ShortenURLResponse(
             id=url.id,
             original_url=url.original_url,
