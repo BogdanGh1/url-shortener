@@ -1,6 +1,7 @@
 import secrets
 import string
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
@@ -11,6 +12,10 @@ _ALPHABET = string.ascii_letters + string.digits
 
 
 class URLService:
+    async def get_by_short_code(self, short_code: str, db: AsyncSession) -> URL | None:
+        result = await db.execute(select(URL).where(URL.short_code == short_code))
+        return result.scalar_one_or_none()
+
     async def shorten(self, payload: ShortenURLRequest, db: AsyncSession) -> ShortenURLResponse:
         short_code = "".join(secrets.choice(_ALPHABET) for _ in range(settings.short_code_length))
         url = URL(original_url=str(payload.original_url), short_code=short_code)
