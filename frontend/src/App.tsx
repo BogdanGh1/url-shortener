@@ -54,12 +54,12 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-indigo-600 text-white py-6 px-4 shadow">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h1 className="text-2xl font-bold">URL Shortener</h1>
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-8 space-y-6">
+      <main className="max-w-5xl mx-auto px-4 py-8 space-y-6">
         <div className="bg-white rounded-xl shadow-sm p-6 space-y-4">
           <h2 className="text-lg font-semibold text-gray-700">Shorten a URL</h2>
           <ShortenForm onShorten={handleShorten} isLoading={isLoading} />
