@@ -30,3 +30,5 @@ build/
 notebooks/
 .ipynb_checkpoints/
 
+# Claude
+CLAUDE.md

@@ -1,8 +1,8 @@
 import pytest
 
-from app.schemas.url import ShortenURLRequest
-from app.services.url_service import URLService, _ALPHABET
 from app.core.config import settings
+from app.schemas.url import ShortenURLRequest
+from app.services.url_service import _ALPHABET, URLService
 
 
 @pytest.mark.asyncio
@@ -44,7 +44,11 @@ async def test_shorten_same_url_returns_same_code(db_session):
 
 @pytest.mark.asyncio
 async def test_shorten_different_urls_return_different_codes(db_session):
-    result1 = await URLService().shorten(ShortenURLRequest(original_url="https://foo.com"), db_session)
-    result2 = await URLService().shorten(ShortenURLRequest(original_url="https://bar.com"), db_session)
+    result1 = await URLService().shorten(
+        ShortenURLRequest(original_url="https://foo.com"), db_session
+    )
+    result2 = await URLService().shorten(
+        ShortenURLRequest(original_url="https://bar.com"), db_session
+    )
 
     assert result1.short_code != result2.short_code

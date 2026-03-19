@@ -34,7 +34,9 @@ class URLService:
         url = existing.scalar_one_or_none()
 
         if url is None:
-            short_code = "".join(secrets.choice(_ALPHABET) for _ in range(settings.short_code_length))
+            short_code = "".join(
+                secrets.choice(_ALPHABET) for _ in range(settings.short_code_length)
+            )
             url = URL(original_url=original_url, short_code=short_code)
             db.add(url)
             await db.commit()
